@@ -1,0 +1,72 @@
+﻿<Window x:Class="Map.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        xmlns:local="clr-namespace:Map"
+        WindowStyle="None"
+        mc:Ignorable="d"
+        Title="Дерево квадрантов" Height="500" Width="800"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="DarkTurquoise"/>
+            <Setter Property="FontFamily" Value="Century Gothic"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Верхняя пользовательская панель управления -->
+        <Grid Background="DarkGray" Height="30" VerticalAlignment="Top">
+            <TextBlock Text="Дерево квадрантов" Foreground="White" Margin="10,0" VerticalAlignment="Center" FontWeight="SemiBold" FontFamily="Century Gothic"/>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,10,0">
+                <Button Width="20" Height="20" Content="_" Background="Transparent" BorderThickness="0" Foreground="White" FontWeight="Bold" Click="WindowMinimizeClick" />
+                <Button Width="20" Height="20" Content="□" Background="Transparent" BorderThickness="0" Foreground="White" FontWeight="Bold" Click="WindowMaximizeClick" />
+                <Button Width="20" Height="20" Content="x" Background="Transparent" BorderThickness="0" Foreground="White" FontWeight="Bold" Click="WindowCloseClick" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Область для отображения карты -->
+        <Grid Grid.Row="1">
+            <m:Map x:Name="MyMap" CredentialsProvider="AhLSabxwJuk9sPhEnJhb3cJjg2TVz73gBsRFjl2OkfMvnzdqSsxwo3ZdPjD-9Izi" Center="55,83" ZoomLevel="10" MouseDoubleClick="Map_MouseDoubleClick">
+                <m:MapLayer x:Name="MarkersLayer" />
+                <m:MapLayer x:Name="QuadTreeLayer" />
+                <!-- Дополнительный слой для отображения дерева квадрантов -->
+            </m:Map>
+        </Grid>
+
+        <!-- Панель с кнопками и другими элементами управления -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Background="#4CD8D8D8">
+            <Button Content="Очистить карту" Click="ClearMap_Click" Margin="0 0 0 10" Background="#80FFFFFF"/>
+            <TextBox x:Name="LatitudeTextBox" Width="150" Height="30" Text="Широта" Background="#7FFFFFFF" FontFamily="Century Gothic"/>
+            <TextBox x:Name="LongitudeTextBox" Width="150" Height="30" Text="Долгота" Background="#7FFFFFFF" FontFamily="Century Gothic"/>
+            <Button Content="Добавить локацию" Click="AddLocation_Click" Height="30" Margin="0 10 0 0"/>
+            <Button Content="Показать маршрут" Click="ShowRoute_Click" Height="30"/>
+            <Button Content="Построить дерево квадрантов" Click="BuildQuadTree_Click" Height="30"/>
+        </StackPanel>
+    </Grid>
+</Window>
